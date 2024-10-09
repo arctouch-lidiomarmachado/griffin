@@ -5,7 +5,8 @@ import os.log
 
 class BeaconManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var locationManager: CLLocationManager
-    @Published var beaconDistance: String = "No Beacons detected"
+    @Published var beaconDistance: String = ""
+    @Published var beaconDetected: Bool = false
     @Published private var counter = 0
     @Published private var timer: Timer?
     let centralManager = CentralManager()
@@ -51,6 +52,7 @@ class BeaconManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
         if let nearestBeacon = beacons.first {
+            beaconDetected = true
             switch nearestBeacon.proximity {
             case .immediate:
                 beaconDistance = "Immediate (Less than 1 meter)"
@@ -64,7 +66,7 @@ class BeaconManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 beaconDistance = "Unknown error"
             }
         } else {
-            beaconDistance = "No Beacons detected"
+            beaconDetected = false
         }
     }
 
