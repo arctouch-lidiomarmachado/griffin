@@ -9,6 +9,7 @@
 import CoreBluetooth
 import SwiftUI
 import os.log
+import UserNotifications
 
 class CentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, ObservableObject {
     var centralManager: CBCentralManager!
@@ -28,6 +29,7 @@ class CentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
     override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
+        requestNotificationAuthorization()
     }
 
     func toggleScanning() {
@@ -101,7 +103,12 @@ class CentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
         peripheral.readValue(for: characteristic)
 
         // Send a message to the peripheral after connection
-        sendMessageToPeripheral(peripheral: peripheral, message: "Hello from Central!")
+        let title = "Message sent"
+        let subtittle = "A message was sent to the peripheral."
+        let message = "Hello from Central!"
+        sendMessageToPeripheral(peripheral: peripheral, message: message)
+        sendNotification(title: title, message: subtittle)
+        
     }
 
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: (any Error)?) {
@@ -144,6 +151,29 @@ class CentralManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, 
         let data = message.data(using: .utf8)
         peripheral.writeValue(data!, for: characteristic, type: .withResponse)
         os_log("Sent message to peripheral: %@ [Beacon]", message)
+    }
+    
+    private func requestNotificationAuthorization() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("Notification authorization granted.")
+            } else if let error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func sendNotification(title: String, message: String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.subtitle = message
+        content.sound = UNNotificationSound.default
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request)
     }
 
     private func calculateDistance(rssi: Double) -> Double {

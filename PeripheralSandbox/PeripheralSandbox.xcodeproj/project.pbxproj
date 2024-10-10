@@ -252,7 +252,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PeripheralSandbox/Preview Content\"";
-				DEVELOPMENT_TEAM = F35QH36L6L;
+				DEVELOPMENT_TEAM = K745J44S6R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "PeripheralSandbox needs access to bluetooth";
@@ -283,7 +283,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PeripheralSandbox/Preview Content\"";
-				DEVELOPMENT_TEAM = F35QH36L6L;
+				DEVELOPMENT_TEAM = K745J44S6R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "PeripheralSandbox needs access to bluetooth";
