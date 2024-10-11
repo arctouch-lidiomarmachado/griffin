@@ -25,11 +25,24 @@ struct ContentView: View {
 struct BeaconMessage: View {
     var message: String
     let image = "iphone.gen1.radiowaves.left.and.right"
+    @State private var isAnimating = false
     
     var body: some View {
-        Label(message, systemImage: image)
-        .symbolEffect(.variableColor, isActive: true)
-        .font(.title)
+        VStack {
+            HStack {
+                Image(systemName: image)
+                    .scaleEffect(isAnimating ? 1.5 : 1)
+                    .animation(
+                        isAnimating ? .easeInOut(duration: 1).repeatForever(autoreverses: true) :
+                                .default,
+                        value: isAnimating
+                    )
+                    .onAppear {
+                        isAnimating = true
+                    }
+                Text(message).font(.title)
+            }
+        }
     }
 }
 
